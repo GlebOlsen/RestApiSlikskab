@@ -11,17 +11,13 @@ namespace RestServiceTest
     public class ReadingsManagerTest
     {
         private static ReadingsManager _manager;
-
-        [ClassInitialize]
-        public static void Init(TestContext ctx)
-        {
-            _manager = new ReadingsManager(ReadingsManager.TestData);
-        }
+        private static Reading _testReading;
 
         [TestInitialize]
         public void MethodInit()
         {
             _manager = new ReadingsManager(ReadingsManager.TestData);
+            _testReading = new Reading(3, 100, DateTime.Now, false, new byte[] { });
         }
 
         [TestMethod]
@@ -49,19 +45,27 @@ namespace RestServiceTest
         [TestMethod]
         public void Post_Should_UpdateData()
         {
-            Reading newReading = new Reading(3, 4, DateTime.Now, false, new byte[] { });
             int originalLength = _manager.GetAll().Count;
-            _manager.Post(newReading);
+            _manager.Post(_testReading);
             Assert.AreNotEqual(originalLength, _manager.GetAll().Count);
+        }
+
+        [TestMethod]
+        public void Post_ShouldOverideIdToLargestInData()
+        {
+            int originalId = _testReading.ReadingId;
+            Reading posted = _manager.Post(_testReading);
+            Assert.AreNotEqual(originalId, posted.ReadingId);
         }
 
         [TestMethod]
         public void Update_ShouldModifyGivenValue()
         {
             Reading original = _manager.GetById(2);
-            Reading updated = _manager.Update(2, new Reading(100, 200, DateTime.Now, false, new byte[] { }));
+            int originalId = _testReading.ReadingId;
+            Reading updated = _manager.Update(2, _testReading);
             Assert.AreNotEqual(original, updated);
-            Assert.AreEqual(updated.SensorId, 100);
+            Assert.IsTrue(updated.ReadingId < originalId);
         }
 
         [TestMethod]

@@ -18,8 +18,8 @@ namespace RestService.Managers
 
         public ReadingsManager(List<Reading> data)
         {
-            Data = data.Where((r) => true).ToList();
-            _currentId = data.OrderByDescending((r) => r.ReadingId).First().ReadingId;
+            Data = data.Where((r) => true).ToList(); // Lav en kopi af data listen 
+            _currentId = FindLargestId(data);
         }
 
         public ICollection<Reading> GetAll()
@@ -32,20 +32,20 @@ namespace RestService.Managers
             return Data.Find((r) => r.ReadingId == id);
         }
 
-        public Reading Post(Reading newReading)
+        public Reading Post(Reading reading)
         {
-            newReading.ReadingId = ++_currentId;
-            Data.Add(newReading);
-            return newReading;
+            reading.ReadingId = ++_currentId;
+            Data.Add(reading);
+            return reading;
         }
 
         public Reading Update(int id, Reading reading)
         {
-            int index = Data.FindIndex((e) => e.ReadingId == id);
-            if (index != -1)
+            Reading fetchedReading = GetById(id);
+            if (fetchedReading != null)
             {
-                Data[index] = reading;
-                return Data[index];
+                Data.Remove(fetchedReading);
+                return Post(reading);
             }
             else
             {
@@ -56,12 +56,16 @@ namespace RestService.Managers
         public Reading Delete(int id)
         {
             Reading reading = GetById(id);
-            if(reading != null)
+            if (reading != null)
             {
                 Data.Remove(reading);
             }
 
             return reading;
+        }
+        private int FindLargestId(List<Reading> data)
+        {
+            return data.OrderByDescending((r) => r.ReadingId).First().ReadingId;
         }
     }
 }
