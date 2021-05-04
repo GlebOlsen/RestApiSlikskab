@@ -9,6 +9,7 @@ namespace RestService.Managers
     public class ReadingsManager
     {
         private static List<Reading> Data { get; set; }
+        private int _currentId;
         public static List<Reading> TestData { get; set; } = new List<Reading>()
         {
             new Reading(1, 2, DateTime.Today, false, new byte[]{ }),
@@ -18,6 +19,7 @@ namespace RestService.Managers
         public ReadingsManager(List<Reading> data)
         {
             Data = data.Where((r) => true).ToList();
+            _currentId = data.OrderByDescending((r) => r.ReadingId).First().ReadingId;
         }
 
         public ICollection<Reading> GetAll()
@@ -30,9 +32,11 @@ namespace RestService.Managers
             return Data.Find((r) => r.ReadingId == id);
         }
 
-        public void Post(Reading newReading)
+        public Reading Post(Reading newReading)
         {
+            newReading.ReadingId = ++_currentId;
             Data.Add(newReading);
+            return newReading;
         }
 
         public Reading Update(int id, Reading reading)

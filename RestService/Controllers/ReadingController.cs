@@ -31,23 +31,23 @@ namespace RestService.Controllers
 
         // POST api/<ReadipngsController>
         [HttpPost]
-        public void Post([FromBody] Reading value)
+        public Reading Post([FromBody] Reading value)
         {
-            _manager.Post(value);
+            return _manager.Post(value);
         }
 
         // PUT api/<ReadipngsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Reading value)
+        public Reading Put(int id, [FromBody] Reading value)
         {
-            _manager.Update(id, value);
+            return _manager.Update(id, value);
         }
 
         // DELETE api/<ReadipngsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public Reading Delete(int id)
         {
-            _manager.Delete(id);
+            return _manager.Delete(id);
         }
     }
 }
