@@ -14,7 +14,7 @@ namespace RestService.Controllers
     [ApiController]
     public class ReadingController : ControllerBase
     {
-        private ReadingsManager _manager = new ReadingsManager(ReadingsManager.TestData);
+        private static ReadingsManager _manager = new ReadingsManager(ReadingsManager.TestData);
         // GET: api/<ReadipngsController>
         [HttpGet]
         public IEnumerable<Reading> Get()
@@ -31,20 +31,23 @@ namespace RestService.Controllers
 
         // POST api/<ReadipngsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public void Post([FromBody] Reading value)
         {
+            _manager.Post(value);
         }
 
         // PUT api/<ReadipngsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Reading value)
         {
+            _manager.Update(id, value);
         }
 
         // DELETE api/<ReadipngsController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _manager.Delete(id);
         }
     }
 }

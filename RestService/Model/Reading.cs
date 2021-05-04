@@ -11,6 +11,7 @@ namespace RestService.Model
         public bool IsOpen { get; set; }
         public byte[] ImageData { get; set; }
 
+        public Reading() { }
         public Reading(int sensorId, int readingId, DateTime time, bool isOpen, byte[] imageData)
         {
             SensorId = sensorId;
