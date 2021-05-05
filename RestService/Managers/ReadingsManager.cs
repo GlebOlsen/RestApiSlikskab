@@ -1,4 +1,5 @@
-﻿using RestService.Model;
+﻿using RestService.Contexts;
+using RestService.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 
 namespace RestService.Managers
 {
-    public class ReadingsManager
+    public class ReadingsManager : IManager<Reading>
     {
         private static List<Reading> Data { get; set; }
         private int _currentId;
@@ -21,6 +22,7 @@ namespace RestService.Managers
             Data = data.Where((r) => true).ToList(); // Lav en kopi af data listen 
             _currentId = FindLargestId(data);
         }
+
 
         public ICollection<Reading> GetAll()
         {
@@ -42,7 +44,7 @@ namespace RestService.Managers
         public Reading Update(int id, Reading reading)
         {
             Reading fetchedReading = GetById(id);
-            if (fetchedReading != null)
+            if (reading != null)
             {
                 Data.Remove(fetchedReading);
                 return Post(reading);

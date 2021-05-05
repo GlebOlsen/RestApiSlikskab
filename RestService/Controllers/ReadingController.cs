@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RestService.Contexts;
 using RestService.Managers;
 using RestService.Model;
 
@@ -15,8 +16,14 @@ namespace RestService.Controllers
     [ApiController]
     public class ReadingController : ControllerBase
     {
-        private static ReadingsManager _manager = new ReadingsManager(ReadingsManager.TestData);
+        private static IManager<Reading> _manager;
         private static string _idNotFoundMessage = $"Could not find reading with id ";
+        
+        public ReadingController(ReadingContext ctx)
+        {
+            _manager = new EFReadingsManager(ctx);
+        }
+        
         // GET: api/<ReadipngsController>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
