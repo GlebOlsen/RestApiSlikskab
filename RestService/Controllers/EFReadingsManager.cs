@@ -9,10 +9,12 @@ namespace RestService.Controllers
     internal class EFReadingsManager : IManager<Reading> 
     {
         private ReadingContext _context;
+        private int _currentId;
 
         public EFReadingsManager(ReadingContext ctx)
         {
             _context = ctx;
+            _currentId = _context.Readings.OrderByDescending((r) => r.ReadingId).First().ReadingId;
         }
 
         public Reading Delete(int id)
@@ -34,6 +36,7 @@ namespace RestService.Controllers
         }
         public Reading Post(Reading value)
         {
+            value.ReadingId = ++_currentId;
             _context.Readings.Add(value);
             _context.SaveChanges();
             return value;
