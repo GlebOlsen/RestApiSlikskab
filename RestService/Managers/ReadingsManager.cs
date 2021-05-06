@@ -13,8 +13,8 @@ namespace RestService.Managers
         private int _currentId;
         public static List<Reading> TestData { get; set; } = new List<Reading>()
         {
-            new Reading(1, 2, DateTime.Today, false, new byte[]{ }),
-            new Reading(2, 3, DateTime.Today, true, new byte[]{ })
+            new Reading(1, 2, (int)DateTimeOffset.Now.ToUnixTimeSeconds(), false, ""),
+            new Reading(2, 3, (int) DateTimeOffset.Now.ToUnixTimeSeconds(), true,"") 
         };
 
         public ReadingsManager(List<Reading> data)

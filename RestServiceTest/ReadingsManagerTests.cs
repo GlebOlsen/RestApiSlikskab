@@ -17,7 +17,7 @@ namespace RestServiceTest
         public void MethodInit()
         {
             _manager = new ReadingsManager(ReadingsManager.TestData);
-            _testReading = new Reading(3, 100, DateTime.Now, false, new byte[] { });
+            _testReading = new Reading(3, 100, (int)DateTimeOffset.Now.ToUnixTimeSeconds(), false, new byte[] { });
         }
 
         [TestMethod]

@@ -10,12 +10,12 @@ namespace RestService.Model
 
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int ReadingId { get; set; }
-        public DateTime Time { get; set; }
+        public int Time { get; set; }
         public bool IsOpen { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
 
         public Reading() { }
-        public Reading(int sensorId, int readingId, DateTime time, bool isOpen, byte[] imageData)
+        public Reading(int sensorId, int readingId, int time, bool isOpen, string imageData)
         {
             SensorId = sensorId;
             ReadingId = readingId;
