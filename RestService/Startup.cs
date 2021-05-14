@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using RestService.Contexts;
 
 namespace RestService
@@ -29,6 +30,11 @@ namespace RestService
         {
             services.AddControllers();
             services.AddDbContext<ReadingContext>(opt => opt.UseSqlServer("Server=tcp:slikskabdb.database.windows.net,1433;Initial Catalog=SlikskabDB;Persist Security Info=False;User ID=slikskab;Password=Skabslik1234;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Items API", Version = "v1.0" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +55,12 @@ namespace RestService
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Items API v1.0")
+            );
         }
     }
 }
