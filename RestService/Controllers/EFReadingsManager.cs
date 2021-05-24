@@ -14,7 +14,13 @@ namespace RestService.Controllers
         public EFReadingsManager(ReadingContext ctx)
         {
             _context = ctx;
-            _currentId = _context.Readings.OrderByDescending((r) => r.ReadingId).First().ReadingId;
+            if (_context.Readings.Count() == 0)
+            {
+                _currentId = 0;
+            } else
+            {
+                _currentId = _context.Readings.OrderByDescending((r) => r.ReadingId).First().ReadingId;
+            }
         }
 
         public Reading Delete(int id)
